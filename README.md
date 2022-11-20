@@ -4,7 +4,7 @@ NPX2218/NPX2218 is a ✨ special ✨ repository because its `README.md` (this fi
 You can click the Preview link to take a look at your changes.
 --->
 
-<p align="center"><a href="https://anuraghazra.github.io"><img width="80%" alt="Hello, I'm Neel. I do open source!" src="./assets/gh-readme-header.png" /></a></p>
+<p align="center"><h1>Hello, I am Neel</h1></a></p>
 
 <br />
 

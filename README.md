@@ -4,8 +4,8 @@ NPX2218/NPX2218 is a ✨ special ✨ repository because its `README.md` (this fi
 You can click the Preview link to take a look at your changes.
 --->
 <div align="center">
+![NEEL_BANSAL-removebg-preview](https://user-images.githubusercontent.com/87876573/202887252-5993c5a1-ae65-4c79-88a1-80ce26f05358.png)
 
-![NEEL_BANSAL-removebg-preview](https://user-images.githubusercontent.com/87876573/202887208-ca603879-dfd3-497f-8332-538e52167179.png)
   </div>
 
 <br />

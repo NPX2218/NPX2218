@@ -7,3 +7,5 @@
 NPX2218/NPX2218 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 You can click the Preview link to take a look at your changes.
 --->
+
+![Neel's GitHub stats](https://github-readme-stats.vercel.app/api?username=NPX2218&theme=monokai&show_icons=true)

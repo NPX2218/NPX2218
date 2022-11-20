@@ -1,7 +1,3 @@
-- 👋 Hi, I’m @NPX2218
-- 👀 I’m interested in computer science and am looking forward to learn more!
-- 🌱 I’m currently learning NextJS, SSR, CSS, Tailwind, Python and many more things :)
-- 💞️ I’m looking to collaborate on projects at the moment! So if you would like drop me a message!
 
 <!---
 NPX2218/NPX2218 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
@@ -16,9 +12,14 @@ I'm a self-taught FrontEnd developer from India and America
 
 **About me**
 
+- 👋 Hi, I’m @NPX2218
+- 👀 I am currently learning a little bit about computer science and am looking forward to learn more!
+- 🌱 I know how to use a few technologies such as NextJS, SSR, CSS, Tailwind, Python and many more things :)
+- 💞️ I’m looking to collaborate on projects at the moment! So if you would like drop me a message!
+
 - ❤️ I love writing TypeScript, and building fun experiments on type-level
 
-- 💬 Ask me about anything [here](https://github.com/anuraghazra/anuraghazra/issues)
+- 💬 Ask me about anything [here](https://github.com/NPX2218/NPX2218/issues)
 
 <div align="center">
   

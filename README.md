@@ -11,7 +11,7 @@ You can click the Preview link to take a look at your changes.
 
 <br />
 
-I'm a self-taught FrontEnd developer from India and America
+Hello I'm Neel! I'm a Computer Science and Mathematics major at Northeastern University, expecting to graduate in 2029. 
 
 **About me**
 

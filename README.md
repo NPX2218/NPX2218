@@ -1,58 +1,32 @@
-
-<!---
-NPX2218/NPX2218 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
 <div align="center">
 
-![NEEL_BANSAL-removebg-preview](https://user-images.githubusercontent.com/87876573/202887252-5993c5a1-ae65-4c79-88a1-80ce26f05358.png)
+# Neel Bansal
 
- </div>
+**CS + Math** @ Northeastern · Class of 2029
 
-<br />
+`visualization` · `research` · `full-stack`
 
-Hello I'm Neel! I'm a Computer Science and Mathematics major at Northeastern University, expecting to graduate in 2029. 
+<a href="https://linkedin.com/in/neelbansal"><img src="https://img.shields.io/badge/-LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white" /></a>
+<a href="https://twitter.com/_neelbansal_"><img src="https://img.shields.io/badge/-Twitter-1DA1F2?style=flat-square&logo=twitter&logoColor=white" /></a>
+<a href="mailto:bansal.ne@northeastern.edu"><img src="https://img.shields.io/badge/-Email-EA4335?style=flat-square&logo=gmail&logoColor=white" /></a>
 
-**About me**
+</div>
 
-- 👋 Hi, I’m @NPX2218
-- 👀 I am currently learning a little bit about computer science and am looking forward to learn more!
-- 🌱 I know how to use a few technologies such as NextJS, SSR, CSS, Tailwind, Python and many more things :)
-- 💞️ I’m looking to collaborate on projects at the moment! So if you would like drop me a message!
+---
 
-- ❤️ I love writing TypeScript, and building fun experiments on type-level
+### Now
 
-- 💬 Ask me about anything [here](https://github.com/NPX2218/NPX2218/issues)
+🔬 **Undergraduate Researcher**: AI-based earthquake prediction with Northeastern & University of Alaska Fairbanks. Signal processing, feature extraction, ML for seismic precursor detection.
 
-<div align="center">
-  
+🌍 **Building Flight Trail**: Interactive travel tracker with 3D globe visualization. React, TypeScript, Three.js, Supabase, Capacitor.
 
-<code><img height="20" alt="javascript" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"></code>
-<code><img height="20" alt="typescript" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/typescript/typescript.png"></code>
-<code><img height="20" alt="react" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></code>
-<code><img height="20" alt="nodejs" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nodejs/nodejs.png"></code>    <code><img height="20" alt="python" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code>    <code><img height="20" alt="html" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png"></code>    <code><img height="20" alt="cssjs" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png"></code>    
-  </div>
+---
 
+### Stack
 
-| <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=NPX2218&show_icons=true&include_all_commits=true&theme=buefy&hide_border=true" alt="Neels's github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=NPX2218&layout=compact&theme=buefy&hide_border=true" /></a> |
-| ------------- | ------------- |
+<p>
+  <img src="https://skillicons.dev/icons?i=ts,js,python,java,react,nextjs,threejs,tailwind,nodejs,supabase,postgres&theme=light" />
+</p>
 
-#### Top Repositories
-
-
-<a href="https://github.com/NPX2218/alox-bot">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=NPX2218&repo=alox-bot&theme=buefy" />
-</a>
-<a href="https://github.com/NPX2218/Pathfinding-Visualizer">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=NPX2218&repo=Pathfinding-Visualizer&theme=buefy" />
-</a>
-
-<br />
-<br />
-
-<a href="https://twitter.com/_neelbansal_">
-  <img align="right" alt="Neel Bansal | Twitter" width="21px" src="https://raw.githubusercontent.com/anuraghazra/anuraghazra/master/assets/twitter.svg" />
-</a>
-<
-
+---
 

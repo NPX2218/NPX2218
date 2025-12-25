@@ -1,32 +1,123 @@
 <div align="center">
 
-# Neel Bansal
+```
+ ███╗   ██╗███████╗███████╗██╗         ██████╗  █████╗ ███╗   ██╗███████╗ █████╗ ██╗     
+ ████╗  ██║██╔════╝██╔════╝██║         ██╔══██╗██╔══██╗████╗  ██║██╔════╝██╔══██╗██║     
+ ██╔██╗ ██║█████╗  █████╗  ██║         ██████╔╝███████║██╔██╗ ██║███████╗███████║██║     
+ ██║╚██╗██║██╔══╝  ██╔══╝  ██║         ██╔══██╗██╔══██║██║╚██╗██║╚════██║██╔══██║██║     
+ ██║ ╚████║███████╗███████╗███████╗    ██████╔╝██║  ██║██║ ╚████║███████║██║  ██║███████╗
+ ╚═╝  ╚═══╝╚══════╝╚══════╝╚══════╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚══════╝
+```
 
-**CS + Math** @ Northeastern · Class of 2029
+**`cs + math @ northeastern`** · **`class of 2029`**
 
-`visualization` · `research` · `full-stack`
-
-<a href="https://linkedin.com/in/neelbansal"><img src="https://img.shields.io/badge/-LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white" /></a>
-<a href="https://twitter.com/_neelbansal_"><img src="https://img.shields.io/badge/-Twitter-1DA1F2?style=flat-square&logo=twitter&logoColor=white" /></a>
-<a href="mailto:bansal.ne@northeastern.edu"><img src="https://img.shields.io/badge/-Email-EA4335?style=flat-square&logo=gmail&logoColor=white" /></a>
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/neel-bansal)
+[![Email](https://img.shields.io/badge/neelbansalx@gmail.com-EA4335?style=flat&logo=gmail&logoColor=white)](mailto:neelbansalx@gmail.com)
+![Views](https://komarev.com/ghpvc/?username=neel-b5&style=flat&color=0d1117&label=views)
 
 </div>
 
 ---
 
-### Now
+## now
 
-🔬 **Undergraduate Researcher**: AI-based earthquake prediction with Northeastern & University of Alaska Fairbanks. Signal processing, feature extraction, ML for seismic precursor detection.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  🌋 SEISMIC ML PIPELINE                                                     │
+│  ───────────────────────────────────────────────────────────────────────    │
+│  Undergraduate research with Northeastern University and                    |
+|  University of Alaska Fairbanks                                             │
+│                                                                             │
+│  Building the preprocessing pipeline for earthquake prediction:             │
+│                                                                             │
+│  Raw miniSEED ──► Sliding Windows ──► Bandpass Filtering ──► Features       │
+│       │                                     │                    │          │
+│       │              ┌──────────────────────┼────────────────────┤          │
+│       │              │                      │                    │          │
+│       │          HF1 (5-25 Hz)        HF2 (0.1-5 Hz)        LF (drift)      │
+│       │              │                      │                    │          │
+│       │              └──────────────────────┼────────────────────┘          │
+│       │                                     │                               │
+│       │                              Histogram Analysis                     │
+│       │                                     │                               │
+│       │                           ┌─────────┴─────────┐                     │
+│       │                     Centroid (yₘ)      Spread (S)                   │
+│       │                                                                     │
+│       └──► USGS Catalog ──► Labels ──► Feature Matrix for ML                │
+│                                                                             │
+│  Stack: Python · ObsPy · NumPy · SciPy · TensorFlow                         │
+│  Next: CNN architecture for precursor pattern detection                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-🌍 **Building Flight Trail**: Interactive travel tracker with 3D globe visualization. React, TypeScript, Three.js, Supabase, Capacitor.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  🌍 FLIGHT TRAIL                                                            │
+│  ───────────────────────────────────────────────────────────────────────    │
+│  Interactive 3D travel visualization                                        │
+│                                                                             │
+│  • Three.js globe with day/night/timezone textures                          │
+│  • 10,000+ airport database with IATA search                                │
+│  • Curved arc paths between destinations                                    │
+│  • REST Countries API for destination intel                                 │
+│  • Mobile-first with Capacitor native builds                                │
+│                                                                             │
+│  Stack: React · TypeScript · Three.js · R3F · Supabase · Capacitor          │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  🏛️ REPONODB                                                                │
+│  ───────────────────────────────────────────────────────────────────────    │
+│  Git meets SQL: in ~2000 lines of readable C++                              │
+│                                                                             │
+│  repono> INSERT INTO users VALUES (1, 'Alice', 25);                         │
+│  repono> COMMIT 'added alice';                                              │
+│  repono> SELECT * FROM users AT COMMIT a3f2b7c;                             │
+│  repono> DIFF users FROM main TO feature;                                   │
+│  repono> MERGE feature INTO main;                                           │
+│                                                                             │
+│  Like Dolt, but you can actually read the source.                           │
+│                                                                             │
+│  Stack: C++ · Content-Addressed Storage · Append-Only Log                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
 
 ---
 
-### Stack
+## ventures
 
-<p>
-  <img src="https://skillicons.dev/icons?i=ts,js,python,java,react,nextjs,threejs,tailwind,nodejs,supabase,postgres&theme=light" />
-</p>
+<div align="center">
+
+| | | |
+|:---:|:---:|:---:|
+| **Saudi Stock Digest** | **LANE** | **Seva in Action** |
+| Co-Founder | Founder | Mentor |
+| Financial education | LinkedIn @ Northeastern | Neurodiverse tutoring |
+| 10,000+ students | Career development | 3/4 → Microsoft/Wells Fargo |
+| Gov partnerships | Professional networks | |
+
+</div>
 
 ---
 
+## tools
+
+```
+languages    ██████████████████████░░  TypeScript, JavaScript, Python, C++, Java, C++
+frontend     ████████████████████░░░░  React, Next.js, Three.js, Tailwind, Capacitor
+backend      ██████████████████░░░░░░  Node.js, Supabase, PostgreSQL, Express
+ml/data      ████████████████░░░░░░░░  TensorFlow, NumPy, SciPy, ObsPy, Pandas
+```
+
+---
+
+<div align="center">
+
+**looking for summer 2026 internships**
+
+aerospace · ml research · full-stack
+
+</div>

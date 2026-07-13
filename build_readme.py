@@ -10,8 +10,8 @@ import os
 import re
 import urllib.request
 
-import today          # Andrew6rant's GraphQL fetch engine (unchanged)
-import render         # our SVG layout / content
+import today      # Andrew6rant's GraphQL fetch engine (unchanged)
+import render     # our SVG layout / content
 
 # The komarev counter is keyed on this string (not the GitHub handle). It must
 # match the hidden <img> in README.md so the terminal "Views" number lines up
@@ -24,13 +24,16 @@ def fetch_views(username: str) -> int | None:
     url = (f"https://komarev.com/ghpvc/?username={username}"
            f"&style=flat&color=0d1117&label=views")
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        svg = urllib.request.urlopen(req, timeout=15).read().decode("utf-8", "ignore")
+        req = urllib.request.Request(
+            url, headers={"User-Agent": "Mozilla/5.0"})
+        svg = urllib.request.urlopen(
+            req, timeout=15).read().decode("utf-8", "ignore")
         # The value is the numeric <text> element (the "views" label is the other one).
         nums = [t for t in re.findall(r"<text[^>]*>([^<]+)</text>", svg)
                 if re.fullmatch(r"[\d,]+", t.strip())]
+        # For this find the last <text> that was also a number (which is the views)
         return int(nums[-1].replace(",", "")) if nums else None
-    except Exception:
+    except Exception as _:  # pylint: disable=broad-except
         return None
 
 

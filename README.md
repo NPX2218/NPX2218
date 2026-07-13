@@ -4,7 +4,7 @@
 
 </div>
 
-<!-- Keep this: it's an invisible pixel that makes the profile-view counter tick.
+<!-- Invisible pixel that makes the profile-view counter tick.
      The number itself is shown as "Views" inside the terminal (build_readme.py
      reads it from the same komarev URL). Removing this stops views from counting. -->
 <img src="https://komarev.com/ghpvc/?username=neel-b5&style=flat&color=0d1117&label=views" alt="" width="0" height="0">

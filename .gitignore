@@ -3,3 +3,12 @@ __pycache__/
 .mypy_cache/
 *.pyc
 .DS_Store
+
+# Personal / local-only — never push. photo.jpg is kept locally to re-tune the
+# ASCII portrait via asciify.py; the rest are previews and old backups.
+photo.jpg
+*.jpeg
+Screenshot*.png
+header-preview.png
+ascii-art1.txt
+portrait1.txt

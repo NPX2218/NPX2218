@@ -1,6 +1,7 @@
 import requests
 import os
 import hashlib
+from typing import Any
 
 # Fine-grained personal access token with All Repositories access:
 # Account permissions: read:Followers, read:Starring, read:Watching
@@ -12,25 +13,27 @@ QUERY_COUNT = {'user_getter': 0, 'follower_getter': 0, 'graph_repos_stars': 0,
 
 # Set by build_readme.py after user_getter(); loc_counter_one_repo compares
 # each commit's author against this to decide which commits are yours.
-OWNER_ID = None
+OWNER_ID: dict[str, str] | None = None
 
 
-def simple_request(func_name, query, variables):
+def simple_request(func_name: str, query: str, variables: dict[str, Any]) -> requests.Response:
     """
     Returns a request, or raises an Exception if the response does not succeed.
     """
     request = requests.post('https://api.github.com/graphql',
-                            json={'query': query, 'variables': variables}, headers=HEADERS)
+                            json={'query': query, 'variables': variables},
+                            headers=HEADERS, timeout=None)
     if request.status_code == 200:
         return request
-    raise Exception(func_name, ' has failed with a',
-                    request.status_code, request.text, QUERY_COUNT)
+    raise RuntimeError(func_name, ' has failed with a',
+                       request.status_code, request.text, QUERY_COUNT)
 
 
-def graph_repos_stars(count_type, owner_affiliation, cursor=None):
+def graph_repos_stars(count_type: str, owner_affiliation: list[str], cursor: str | None = None) -> int:
     """
     Uses GitHub's GraphQL v4 API to return my total repository or star count.
     """
+
     query_count('graph_repos_stars')
     query = '''
     query ($owner_affiliation: [RepositoryAffiliation], $login: String!, $cursor: String) {
@@ -57,14 +60,20 @@ def graph_repos_stars(count_type, owner_affiliation, cursor=None):
     variables = {'owner_affiliation': owner_affiliation,
                  'login': USER_NAME, 'cursor': cursor}
     request = simple_request(graph_repos_stars.__name__, query, variables)
-    if request.status_code == 200:
-        if count_type == 'repos':
-            return request.json()['data']['user']['repositories']['totalCount']
-        elif count_type == 'stars':
-            return stars_counter(request.json()['data']['user']['repositories']['edges'])
+    # simple_request already guaranteed a 200 (it raises otherwise), so no re-check.
+    repos = request.json()['data']['user']['repositories']
+    if count_type == 'repos':
+        return int(repos['totalCount'])
+    if count_type == 'stars':
+        return stars_counter(repos['edges'])
+    # Any other count_type is a caller bug — fail loudly instead of falling off
+    # the end and returning None (which is what mypy's "missing return" flagged).
+    raise ValueError(f"unknown count_type: {count_type!r}")
 
 
-def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0, deletion_total=0, my_commits=0, cursor=None):
+def recursive_loc(owner: str, repo_name: str, data: list[str], cache_comment: list[str],
+                  addition_total: int = 0, deletion_total: int = 0, my_commits: int = 0,
+                  cursor: str | None = None) -> tuple[int, int, int]:
     """
     Uses GitHub's GraphQL v4 API and cursor pagination to fetch 100 commits from a repository at a time
     """
@@ -110,7 +119,9 @@ def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0, delet
         if request.json()['data']['repository']['defaultBranchRef'] != None:
             return loc_counter_one_repo(owner, repo_name, data, cache_comment, request.json()['data']['repository']['defaultBranchRef']['target']['history'], addition_total, deletion_total, my_commits)
         else:
-            return 0
+            # Empty repo: return a zero *tuple*, not bare 0. cache_builder unpacks
+            # this result as loc[0]/loc[1]/loc[2], so 0 would raise TypeError.
+            return (0, 0, 0)
     # saves what is currently in the file before this program crashes
     force_close_file(data, cache_comment)
     if request.status_code == 403:
@@ -120,7 +131,9 @@ def recursive_loc(owner, repo_name, data, cache_comment, addition_total=0, delet
                     request.status_code, request.text, QUERY_COUNT)
 
 
-def loc_counter_one_repo(owner, repo_name, data, cache_comment, history, addition_total, deletion_total, my_commits):
+def loc_counter_one_repo(owner: str, repo_name: str, data: list[str], cache_comment: list[str],
+                         history: dict[str, Any], addition_total: int, deletion_total: int,
+                         my_commits: int) -> tuple[int, int, int]:
     """
     Recursively call recursive_loc (since GraphQL can only search 100 commits at a time)
     only adds the LOC value of commits authored by me
@@ -137,7 +150,9 @@ def loc_counter_one_repo(owner, repo_name, data, cache_comment, history, additio
         return recursive_loc(owner, repo_name, data, cache_comment, addition_total, deletion_total, my_commits, history['pageInfo']['endCursor'])
 
 
-def loc_query(owner_affiliation, comment_size=0, force_cache=False, cursor=None, edges=[]):
+def loc_query(owner_affiliation: list[str], comment_size: int = 0, force_cache: bool = False,
+              cursor: str | None = None,
+              edges: list[dict[str, Any]] | None = None) -> list[int]:
     """
     Uses GitHub's GraphQL v4 API to query all the repositories I have access to (with respect to owner_affiliation)
     Queries 60 repos at a time, because larger queries give a 502 timeout error and smaller queries send too many
@@ -145,6 +160,11 @@ def loc_query(owner_affiliation, comment_size=0, force_cache=False, cursor=None,
     Returns the total number of lines of code in all repositories
     """
     query_count('loc_query')
+    # Default to None (not []) and seed a fresh list here, so the accumulator
+    # isn't one shared list reused across separate top-level calls — the classic
+    # Python mutable-default-argument bug.
+    if edges is None:
+        edges = []
     query = '''
     query ($owner_affiliation: [RepositoryAffiliation], $login: String!, $cursor: String) {
         user(login: $login) {
@@ -184,7 +204,8 @@ def loc_query(owner_affiliation, comment_size=0, force_cache=False, cursor=None,
         return cache_builder(edges + request.json()['data']['user']['repositories']['edges'], comment_size, force_cache)
 
 
-def cache_builder(edges, comment_size, force_cache, loc_add=0, loc_del=0):
+def cache_builder(edges: list[dict[str, Any]], comment_size: int, force_cache: bool,
+                  loc_add: int = 0, loc_del: int = 0) -> list[int]:
     """
     Checks each repository in edges to see if it has been updated since the last time it was cached
     If it has, run recursive_loc on that repository to update the LOC count
@@ -231,19 +252,19 @@ def cache_builder(edges, comment_size, force_cache, loc_add=0, loc_del=0):
         f.writelines(cache_comment)
         f.writelines(data)
     for line in data:
-        loc = line.split()
-        loc_add += int(loc[3])
-        loc_del += int(loc[4])
+        cols = line.split()          # renamed from `loc` — that name held a tuple above
+        loc_add += int(cols[3])
+        loc_del += int(cols[4])
     return [loc_add, loc_del, loc_add - loc_del, cached]
 
 
-def flush_cache(edges, filename, comment_size):
+def flush_cache(edges: list[dict[str, Any]], filename: str, comment_size: int) -> None:
     """
     Wipes the cache file
     This is called when the number of repositories changes or when the file is first created
     """
     with open(filename, 'r') as f:
-        data = []
+        data: list[str] = []
         if comment_size > 0:
             data = f.readlines()[:comment_size]  # only save the comment
     with open(filename, 'w') as f:
@@ -253,7 +274,7 @@ def flush_cache(edges, filename, comment_size):
                 'utf-8')).hexdigest() + ' 0 0 0 0\n')
 
 
-def force_close_file(data, cache_comment):
+def force_close_file(data: list[str], cache_comment: list[str]) -> None:
     """
     Forces the file to close, preserving whatever data was written to it
     This is needed because if this function is called, the program would've crashed before the file is properly saved and closed
@@ -267,7 +288,7 @@ def force_close_file(data, cache_comment):
           filename, 'has had the partial data saved and closed.')
 
 
-def stars_counter(data):
+def stars_counter(data: list[dict[str, Any]]) -> int:
     """
     Count total stars in repositories owned by me
     """
@@ -277,7 +298,7 @@ def stars_counter(data):
     return total_stars
 
 
-def commit_counter(comment_size):
+def commit_counter(comment_size: int) -> int:
     """
     Counts up my total commits, using the cache file created by cache_builder.
     """
@@ -294,7 +315,7 @@ def commit_counter(comment_size):
     return total_commits
 
 
-def user_getter(username):
+def user_getter(username: str) -> tuple[dict[str, str], str]:
     """
     Returns the account ID and creation time of the user
     """
@@ -311,7 +332,7 @@ def user_getter(username):
     return {'id': request.json()['data']['user']['id']}, request.json()['data']['user']['createdAt']
 
 
-def follower_getter(username):
+def follower_getter(username: str) -> int:
     """
     Returns the number of followers of the user
     """
@@ -329,7 +350,7 @@ def follower_getter(username):
     return int(request.json()['data']['user']['followers']['totalCount'])
 
 
-def query_count(funct_id):
+def query_count(funct_id: str) -> None:
     """
     Counts how many times the GitHub GraphQL API is called
     """

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate ``dark_mode.svg`` — a neofetch-style terminal profile for NPX2218.
+"""Generate ``dark_mode.svg``, a neofetch-style terminal profile for myself.
 
 The file is one self-contained SVG: an ASCII portrait, a neofetch-style info
 column, and ``cat``-style sections for what I'm building, my projects, and my
@@ -16,7 +16,8 @@ import datetime
 import os
 from typing import Optional, TypedDict
 
-# ============================ EDITABLE CONTENT ============================
+# Editable content
+
 BIRTHDAY = datetime.date(2007, 8, 12)
 
 
@@ -26,7 +27,8 @@ def load_portrait() -> list[str]:
     Reads ``portrait.txt`` next to this file (regenerate it from a photo with
     ``downsample.py``). Falls back to a placeholder line if the file is absent.
     """
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "portrait.txt")
+    path = os.path.join(os.path.dirname(
+        os.path.abspath(__file__)), "portrait.txt")
     try:
         with open(path, encoding="utf-8") as f:
             return f.read().rstrip("\n").split("\n")
@@ -88,18 +90,18 @@ PROJECTS: list[dict[str, str]] = [
         "title": "LEETION",
         "desc": "save LeetCode problems and solutions directly to your Notion database.",
         "body": r"""
-- 150k+ impressions & 1.4k+ installs
-- Auto-extracts problem details and code from LeetCode.
-- Built-in spaced repetition to schedule reviews and notification system to remind you.
-- Save multiple languages to the same problem entry.
-- Drawing canvas to sketch trees, graphs, and diagrams.
+    - 150k+ impressions & 1.4k+ installs
+    - Auto-extracts problem details and code from LeetCode.
+    - Built-in spaced repetition to schedule reviews and notification system to remind you.
+    - Save multiple languages to the same problem entry.
+    - Drawing canvas to sketch trees, graphs, and diagrams.
 """,
         "stack": "HTML · CSS · JS",
     },
     {
         "title": "REPONODB",
         "desc": "git meets SQL in ~2000 lines of readable C++",
-        "body": """  repono> INSERT INTO users VALUES (1, 'Neel', 25);
+        "body": """  repono> INSERT INTO users VALUES (1, 'Neel', 18);
   repono> COMMIT 'added neel';
   repono> SELECT * FROM users AT COMMIT a3f2b7c;
   repono> MERGE feature INTO main;""",
@@ -159,9 +161,15 @@ LH = 22                 # line height (info + body)
 CW = 8.4                # monospace char advance at font-size 14
 FS = 14                 # base font size
 X0 = 28                 # left content margin
-PFS = 5.0               # portrait font size (smaller = denser/more detail)
-PLH = 5.6               # portrait line height
-PSTRETCH = 1.15         # portrait horizontal stretch (>1 = wider)
+# Portrait font: sized so the full-res 220-col art fits left of INFO_X (480).
+# 220 * (PFS*0.6*PSTRETCH) + X0 must stay < INFO_X, so PFS=2.9 -> ~2.0px/char ->
+# ~440px wide + 28px margin = 468 < 480. Smaller font = denser = more detail;
+# we use the full-res art directly (no downsample) because the extra resolution
+# reads noticeably crisper at header scale. PLH keeps the ~0.62 cell aspect.
+PFS = 2.9               # portrait font size (smaller = denser/more detail)
+PLH = 3.3               # portrait line height
+# portrait horizontal stretch (>1 = wider, <1 = narrower)
+PSTRETCH = 1.05
 INFO_X = 480            # neofetch info column x (right of the portrait)
 RIGHT = W - 28          # right edge for values / rules
 WORK_ROLE_X = X0 + 210
@@ -232,6 +240,7 @@ def info_row(y: float, label: str, value: str,
     """Emit a neofetch row: label at the left, value at the right, dotted leader between."""
     T(INFO_X, y, label, fill=DIM)
     T(RIGHT, y, value, fill=val_fill, weight=val_weight, anchor="end")
+    # 7 is just a pixel buffer we have on both sides so that it isnt squished
     x1 = INFO_X + len(label) * CW + 7
     x2 = RIGHT - len(value) * CW - 7
     if x2 > x1:
@@ -254,7 +263,8 @@ def _logo_uri(slug: str) -> Optional[str]:
         path = os.path.join(LOGO_DIR, slug + ".png")
         if os.path.exists(path):
             with open(path, "rb") as f:
-                _logo_cache[slug] = "data:image/png;base64," + base64.b64encode(f.read()).decode("ascii")
+                _logo_cache[slug] = "data:image/png;base64," + \
+                    base64.b64encode(f.read()).decode("ascii")
         else:
             _logo_cache[slug] = None
     return _logo_cache[slug]
@@ -263,7 +273,8 @@ def _logo_uri(slug: str) -> Optional[str]:
 def badge(x: float, ybase: float, label: str, s: int = 16) -> None:
     """Fallback company mark when a logo image is missing: rounded square + initial."""
     top = ybase - 13
-    E.append(f'<rect x="{x:.1f}" y="{top:.1f}" width="{s}" height="{s}" rx="4.5" fill="#333"/>')
+    E.append(
+        f'<rect x="{x:.1f}" y="{top:.1f}" width="{s}" height="{s}" rx="4.5" fill="#333"/>')
     E.append(f'<text x="{x + s / 2:.1f}" y="{top + s * 0.72:.1f}" fill="#fff" font-size="10.5" '
              f'font-weight="700" text-anchor="middle" '
              f'font-family="Helvetica,Arial,sans-serif">{esc(label)}</text>')
@@ -275,7 +286,8 @@ def draw_logo(x: float, ybase: float, company: str, s: int = 16) -> None:
     uri = _logo_uri(slug) if slug else None
     if uri:
         top = ybase - 13
-        cid = f"logo_{slug}_{int(ybase)}"  # unique per row (a company can repeat)
+        # unique per row (a company can repeat)
+        cid = f"logo_{slug}_{int(ybase)}"
         E.append(f'<clipPath id="{cid}"><rect x="{x:.1f}" y="{top:.1f}" '
                  f'width="{s}" height="{s}" rx="4.5"/></clipPath>')
         E.append(f'<image x="{x:.1f}" y="{top:.1f}" width="{s}" height="{s}" '
@@ -290,7 +302,11 @@ def build(stats: Stats) -> str:
     today = stats.get("today") or datetime.date.today()
     E.clear()
     # --- title bar ---
-    y = 40 + 30
+    # y is the running vertical cursor. It picks up fractional values later
+    # (spacer lines add LH*0.5, and ship_bottom is float via PLH=3.3), so it
+    # must be float from the start — otherwise mypy locks it to int here and
+    # rejects every float assignment below. iy = y inherits float from this.
+    y: float = 40 + 30
     prompt(X0, y, "whoami")
     y += LH + 4
 

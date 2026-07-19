@@ -162,7 +162,7 @@
 <text x="1062.0" y="118.0" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">macOS, Android, Linux</text>
 <line x1="503.8" y1="114.0" x2="878.6" y2="114.0" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="1.5,3.5"/>
 <text x="480.0" y="140.0" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Uptime</text>
-<text x="1062.0" y="140.0" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">18 years, 11 months, 1 days</text>
+<text x="1062.0" y="140.0" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">18 years, 11 months, 7 days</text>
 <line x1="537.4" y1="136.0" x2="828.2" y2="136.0" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="1.5,3.5"/>
 <text x="480.0" y="162.0" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Host</text>
 <text x="1062.0" y="162.0" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">Northeastern University</text>
@@ -205,20 +205,20 @@
 <text x="480.0" y="483.2" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">— GitHub Stats</text>
 <line x1="606.6" y1="479.2" x2="1062.0" y2="479.2" stroke="#2b2b2b" stroke-width="1"/>
 <text x="480.0" y="505.2" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Repos</text>
-<text x="1062.0" y="505.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">56  |  Contributed: 57</text>
+<text x="1062.0" y="505.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">57  |  Contributed: 58</text>
 <line x1="529.0" y1="501.2" x2="870.2" y2="501.2" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="1.5,3.5"/>
 <text x="480.0" y="527.2" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Stars</text>
 <text x="1062.0" y="527.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">13</text>
 <line x1="529.0" y1="523.2" x2="1038.2" y2="523.2" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="1.5,3.5"/>
 <text x="480.0" y="549.2" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Views</text>
-<text x="1062.0" y="549.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">942</text>
+<text x="1062.0" y="549.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">966</text>
 <line x1="529.0" y1="545.2" x2="1029.8" y2="545.2" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="1.5,3.5"/>
 <text x="480.0" y="571.2" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Commits</text>
-<text x="1062.0" y="571.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">627</text>
+<text x="1062.0" y="571.2" fill="#f0f0f0" font-weight="600" text-anchor="end" xml:space="preserve">670</text>
 <line x1="545.8" y1="567.2" x2="1029.8" y2="567.2" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="1.5,3.5"/>
 <text x="480.0" y="593.2" fill="#8a8a8a" font-weight="400" text-anchor="start" xml:space="preserve">Lines of Code</text>
-<text x="1062.0" y="593.2" fill="#6a6a6a" font-weight="400" text-anchor="end" xml:space="preserve">(1,600,097++, 368,879--)</text>
-<text x="850.4" y="593.2" fill="#f0f0f0" font-weight="700" text-anchor="end" xml:space="preserve">1,231,218</text>
+<text x="1062.0" y="593.2" fill="#6a6a6a" font-weight="400" text-anchor="end" xml:space="preserve">(1,655,511++, 374,552--)</text>
+<text x="850.4" y="593.2" fill="#f0f0f0" font-weight="700" text-anchor="end" xml:space="preserve">1,280,959</text>
 <text x="28" y="637.2" xml:space="preserve"><tspan fill="#8a8a8a">neel@github</tspan><tspan fill="#5a5a5a"> ~ % </tspan><tspan fill="#ffffff" font-weight="700">cat now.txt</tspan></text>
 <text x="28.0" y="661.2" fill="#5a5a5a" font-weight="400" text-anchor="start" xml:space="preserve">&gt; </text>
 <text x="44.8" y="661.2" fill="#cfcfcf" font-weight="400" text-anchor="start" xml:space="preserve">building the future of notetaking @ kov</text>

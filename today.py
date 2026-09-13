@@ -82,9 +82,16 @@ def graph_repos_stars(count_type: str, owner_affiliation: list[str], cursor: str
                     node {
                         ... on Repository {
                             nameWithOwner
-                            stargazers {
-                                totalCount
-                            }
+                            # stargazerCount, not stargazers { totalCount }.
+                            # The stargazers *connection* resolves the list of
+                            # users who starred, which the CI token may not
+                            # read: on 2026-09-13 every repo came back
+                            # FORBIDDEN "Resource not accessible by personal
+                            # access token" on that exact path, and the star
+                            # total silently published as 0. stargazerCount is
+                            # a plain scalar on Repository and needs only
+                            # Metadata read.
+                            stargazerCount
                         }
                     }
                 }
@@ -104,7 +111,7 @@ def graph_repos_stars(count_type: str, owner_affiliation: list[str], cursor: str
         # totalCount is the server-side total, so this needs no pagination.
         return int(repos['totalCount'])
     if count_type == 'stars':
-        total_stars += stars_counter(live_nodes(repos['edges']))
+        total_stars += stars_counter(repos['edges'])
         if repos['pageInfo']['hasNextPage']:
             return graph_repos_stars(count_type, owner_affiliation,
                                      repos['pageInfo']['endCursor'], total_stars)
@@ -341,8 +348,29 @@ def stars_counter(data: list[dict[str, Any]]) -> int:
     Count total stars in repositories owned by me
     """
     total_stars = 0
-    for node in data:
-        total_stars += node['node']['stargazers']['totalCount']
+    unreadable = 0
+    for edge in data:
+        # Takes raw edges, not live_nodes() output: a partial response can null
+        # the whole node OR just the star field, and both mean "unreadable".
+        # Counting them here keeps the readable/unreadable split in one place.
+        node = edge.get('node')
+        count = node.get('stargazerCount') if node else None
+        if count is None:
+            unreadable += 1
+            continue
+        total_stars += count
+
+    if unreadable:
+        print(f'WARNING: {unreadable}/{len(data)} repositories returned no '
+              'star count; total is an undercount', file=sys.stderr)
+    # Publishing a confidently wrong 0 to a public profile is worse than a red
+    # build: on 2026-09-13 a token that could not read star counts turned a
+    # real 14 into a published 0. If nothing was readable, fail instead.
+    if data and unreadable == len(data):
+        raise RuntimeError(
+            'every repository returned an unreadable star count -- refusing to '
+            'publish 0. ACCESS_TOKEN is likely missing repository Metadata '
+            'read; see the GraphQL FORBIDDEN warnings above.')
     return total_stars
 
 

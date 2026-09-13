@@ -1,5 +1,6 @@
 import requests
 import os
+import sys
 import hashlib
 from typing import Any
 
@@ -23,22 +24,59 @@ def simple_request(func_name: str, query: str, variables: dict[str, Any]) -> req
     request = requests.post('https://api.github.com/graphql',
                             json={'query': query, 'variables': variables},
                             headers=HEADERS, timeout=None)
-    if request.status_code == 200:
-        return request
-    raise RuntimeError(func_name, ' has failed with a',
-                       request.status_code, request.text, QUERY_COUNT)
+    if request.status_code != 200:
+        raise RuntimeError(func_name, ' has failed with a',
+                           request.status_code, request.text, QUERY_COUNT)
+
+    # GitHub answers a partially-failed GraphQL query with 200 + an "errors"
+    # array, putting nulls where it could not resolve a field. The old code
+    # only checked the status code, so those errors were discarded and the
+    # nulls surfaced much later as an unreadable "'NoneType' object is not
+    # subscriptable". Two outcomes, two handlings:
+    #   - data missing entirely -> nothing to salvage, raise with the reason.
+    #   - data present -> log and continue; live_nodes() drops the null repos,
+    #     so one unreadable repo can't red-line the whole weekly refresh.
+    body = request.json()
+    if 'errors' in body:
+        print(f'WARNING: {func_name} GraphQL errors: {body["errors"]}',
+              file=sys.stderr)
+        if body.get('data') is None:
+            raise RuntimeError(func_name, ' returned no data',
+                               body['errors'], QUERY_COUNT)
+    return request
 
 
-def graph_repos_stars(count_type: str, owner_affiliation: list[str], cursor: str | None = None) -> int:
+def live_nodes(edges: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """
+    Drop edges whose node came back null.
+
+    Every consumer below dereferences edge['node'][...] directly, so a single
+    null node takes down the entire run — which is what broke the scheduled
+    build on 2026-08-16 and the three scheduled runs after it. Filtering once
+    here, at the fetch boundary, keeps null-handling out of stars_counter,
+    cache_builder and flush_cache.
+    """
+    return [edge for edge in edges if edge.get('node')]
+
+
+def graph_repos_stars(count_type: str, owner_affiliation: list[str], cursor: str | None = None,
+                      total_stars: int = 0) -> int:
     """
     Uses GitHub's GraphQL v4 API to return my total repository or star count.
     """
 
     query_count('graph_repos_stars')
+    # Page size is 60, not the 100 this used to request, to match loc_query --
+    # see its docstring: GitHub 502s on larger repository pages and throttles
+    # on smaller ones. 100 was also silently wrong in a second way: the query
+    # selected pageInfo but never followed it, so the star total stopped at the
+    # first page. Invisible at 57 repos, an undercount the moment there are
+    # more than a page's worth. Both found while tracing the 2026-08-16 CI
+    # break; keep this number in step with loc_query's.
     query = '''
     query ($owner_affiliation: [RepositoryAffiliation], $login: String!, $cursor: String) {
         user(login: $login) {
-            repositories(first: 100, after: $cursor, ownerAffiliations: $owner_affiliation) {
+            repositories(first: 60, after: $cursor, ownerAffiliations: $owner_affiliation) {
                 totalCount
                 edges {
                     node {
@@ -63,9 +101,14 @@ def graph_repos_stars(count_type: str, owner_affiliation: list[str], cursor: str
     # simple_request already guaranteed a 200 (it raises otherwise), so no re-check.
     repos = request.json()['data']['user']['repositories']
     if count_type == 'repos':
+        # totalCount is the server-side total, so this needs no pagination.
         return int(repos['totalCount'])
     if count_type == 'stars':
-        return stars_counter(repos['edges'])
+        total_stars += stars_counter(live_nodes(repos['edges']))
+        if repos['pageInfo']['hasNextPage']:
+            return graph_repos_stars(count_type, owner_affiliation,
+                                     repos['pageInfo']['endCursor'], total_stars)
+        return total_stars
     # Any other count_type is a caller bug — fail loudly instead of falling off
     # the end and returning None (which is what mypy's "missing return" flagged).
     raise ValueError(f"unknown count_type: {count_type!r}")
@@ -195,13 +238,18 @@ def loc_query(owner_affiliation: list[str], comment_size: int = 0, force_cache: 
     variables = {'owner_affiliation': owner_affiliation,
                  'login': USER_NAME, 'cursor': cursor}
     request = simple_request(loc_query.__name__, query, variables)
+    # One parse, one lookup -- this used to re-run request.json() four times.
+    # live_nodes() strips repos GitHub returned as null, so cache_builder and
+    # flush_cache below can keep dereferencing node[...] without a guard.
+    repos = request.json()['data']['user']['repositories']
+    edges += live_nodes(repos['edges'])
     # If repository data has another page
-    if request.json()['data']['user']['repositories']['pageInfo']['hasNextPage']:
+    if repos['pageInfo']['hasNextPage']:
         # Add on to the LoC count
-        edges += request.json()['data']['user']['repositories']['edges']
-        return loc_query(owner_affiliation, comment_size, force_cache, request.json()['data']['user']['repositories']['pageInfo']['endCursor'], edges)
+        return loc_query(owner_affiliation, comment_size, force_cache,
+                         repos['pageInfo']['endCursor'], edges)
     else:
-        return cache_builder(edges + request.json()['data']['user']['repositories']['edges'], comment_size, force_cache)
+        return cache_builder(edges, comment_size, force_cache)
 
 
 def cache_builder(edges: list[dict[str, Any]], comment_size: int, force_cache: bool,

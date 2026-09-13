@@ -175,7 +175,14 @@ PSTRETCH = 1.05
 INFO_X = 480            # neofetch info column x (right of the portrait)
 RIGHT = W - 28          # right edge for values / rules
 WORK_ROLE_X = X0 + 210
-WORK_WHEN_X = X0 + 470
+# WHEN clears the longest role instead of sitting at a fixed X0+470. That fixed
+# offset left the role column 260px wide, which every role fit inside until
+# "Forward Deployed Software Engineer" was added on 2026-09-13: 34 chars at
+# CW=8.4 is 286px, so it printed straight over the date column. Deriving the
+# column keeps any future long title readable instead of silently overlapping.
+# The widest date ("Sep 2026 - Present", 151px) still ends far short of RIGHT.
+WORK_GUTTER = 24        # breathing room between the ROLE and WHEN columns
+WORK_WHEN_X = WORK_ROLE_X + max(len(role) for _, role, _ in WORK) * CW + WORK_GUTTER
 
 BG = "#0b0b0b"          # page background
 BAR = "#121317"         # title bar

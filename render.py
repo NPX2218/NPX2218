@@ -112,16 +112,17 @@ PROJECTS: list[dict[str, str]] = [
 # (company, role, dates) — most recent first. A company may appear twice.
 WORK: list[tuple[str, str, str]] = [
     ("Northeastern", "Teaching Assistant", "Sep 2026 - Present"),
-    ("OsmO", "Full-Stack SWE Intern", "May 2026 - Present"),
-    ("AWS", "AI & ML Scholar", "Feb 2026 - Present"),
+    ("Flavour Trove", "Forward Deployed Software Engineer", "Aug 2026 - Present"),
     ("kov", "Co-Founder", "Jan 2026 - Present"),
-    ("Leetion", "Creator", "Dec 2025 - Present"),
+    ("OsmO", "Full-Stack SWE Intern", "May - Jul 2026"),
+    ("AWS", "AI & ML Scholar (Phase 1)", "Feb - June 2026"),
+    ("Leetion", "Creator", "Dec 2025 - Feb 2026"),
     ("Datacurve · YC W24", "SWE Contributor", "Mar - Apr 2026"),
     ("Northeastern", "Undergraduate Researcher", "Oct 2025 - Feb 2026"),
     ("Kindlegs", "Software Engineer Intern", "Jul - Sep 2025"),
     ("Arkaa", "Frontend SWE Intern", "Jun - Sep 2025"),
     ("SaudiStockDigest", "Co-Founder", "Mar - Nov 2024"),
-    ("Sunshine Boulevard", "SWE Intern", "2023"),
+    ("Sunshine Boulevard", "SWE Intern", "Mar - Apr 2023"),
 ]
 WORK_NOTE = "# -> full detail at linkedin.com/in/neel-bansal"
 
@@ -138,6 +139,7 @@ LOGOS: dict[str, str] = {
     "Arkaa":              "arkaa",
     "SaudiStockDigest":   "saudistockdigest",
     "Sunshine Boulevard": "sunshine",
+    "Flavour Trove":      "flavourtrove",
 }
 
 
